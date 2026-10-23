@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>اسكوتر بنزين وكهرباء | المتجر الأول للسكوترات في مصر</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -84,12 +87,6 @@
                 <button id="admin-add-btn" onclick="openAddScooterModal()" class="hidden items-center gap-2 bg-brand-accent text-black font-bold px-4 py-2.5 rounded-xl hover:bg-brand-accentHover transition-all text-xs sm:text-sm">
                     <i class="fa-solid fa-plus"></i>
                     <span>إضافة سكوتر</span>
-                </button>
-
-                <!-- Admin Sync / Settings Button -->
-                <button id="admin-sync-btn" onclick="openSyncModal()" class="hidden items-center gap-2 bg-blue-500/10 text-blue-400 border border-blue-500/30 font-bold px-3 py-2.5 rounded-xl hover:bg-blue-500/20 transition-all text-xs" title="إعدادات الرابط">
-                    <i class="fa-solid fa-link"></i>
-                    <span class="hidden sm:inline">إعدادات السيرفر</span>
                 </button>
 
                 <!-- Login / Logout Button -->
@@ -363,28 +360,6 @@
         </div>
     </div>
 
-    <!-- MODAL 4: SERVER SETTINGS (API_URL) -->
-    <div id="sync-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-brand-cardBg border border-brand-cardBorder rounded-2xl p-6 sm:p-8 w-full max-w-md relative">
-            <button onclick="closeSyncModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 class="text-2xl font-bold text-white mb-2">إعدادات سيرفر الشيت</h3>
-            <p class="text-xs text-gray-400 mb-6">قم بتعديل أو وضع رابط الويب أب الخاص بـ Google Apps Script.</p>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-gray-300 mb-2">رابط الويب أب (API_URL)</label>
-                    <input type="text" id="script-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-brand-darkBg border border-brand-cardBorder rounded-xl px-4 py-3 text-white text-xs focus:border-brand-accent outline-none">
-                </div>
-                <div class="flex gap-3">
-                    <button onclick="saveApiUrl()" class="flex-1 bg-brand-accent text-black font-extrabold py-3 rounded-xl hover:bg-brand-accentHover transition-all text-sm">حفظ الرابط</button>
-                    <button onclick="loadProductsFromServer()" class="flex-1 bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all text-sm">تحديث المنتجات</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- MODAL 5: CART & CHECKOUT SIDEBAR -->
     <div id="cart-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex justify-end hidden">
         <div class="bg-brand-cardBg border-r border-brand-cardBorder w-full max-w-md h-full flex flex-col p-6 overflow-y-auto">
@@ -432,67 +407,7 @@
 
     <!-- JAVASCRIPT CODE -->
     <script>
-        const INITIAL_PRODUCTS = [
-            {
-                id: '1',
-                title: 'SYM Jet 14 150cc',
-                category: 'gas',
-                price: 78000,
-                images: [
-                    'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80',
-                    'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80'
-                ],
-                speed: '110 كم/س',
-                range: '280 كم / تانك',
-                power: '150cc بنزين',
-                badge: 'الفيوريت بامتياز',
-                specs: { weight: '150 كجم' }
-            },
-            {
-                id: '2',
-                title: 'Xiaomi Scooter Pro 4',
-                category: 'electric',
-                price: 19500,
-                images: [
-                    'https://images.unsplash.com/photo-1597082026196-18e4726d36e8?auto=format&fit=crop&w=600&q=80'
-                ],
-                speed: '25 كم/س',
-                range: '55 كم',
-                power: '700W كهرباء',
-                badge: 'الأكثر مبيعاً',
-                specs: { weight: '120 كجم' }
-            },
-            {
-                id: '3',
-                title: 'Marino Sports 150cc',
-                category: 'gas',
-                price: 62000,
-                images: [
-                    'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80'
-                ],
-                speed: '100 كم/س',
-                range: '240 كم / تانك',
-                power: '150cc بنزين',
-                badge: 'تصميم اقتصادي',
-                specs: { weight: '140 كجم' }
-            },
-            {
-                id: '4',
-                title: 'Kaabo Wolf Warrior X Pro',
-                category: 'electric',
-                price: 48000,
-                images: [
-                    'https://images.unsplash.com/photo-1511994298241-608e28f14fde?auto=format&fit=crop&w=600&q=80'
-                ],
-                speed: '70 كم/س',
-                range: '100 كم',
-                power: '2000W كهرباء Dual',
-                badge: 'أعلى أداء كهربائي',
-                specs: { weight: '150 كجم' }
-            }
-        ];
-
-        let PRODUCTS = JSON.parse(JSON.stringify(INITIAL_PRODUCTS));
+        let PRODUCTS = [];
         let currentCart = [];
         let selectedDriveMode = 'eco';
         let activeCategoryFilter = 'all';
@@ -530,14 +445,12 @@
 
         function updateAdminUI() {
             const adminAddBtn = document.getElementById('admin-add-btn');
-            const adminSyncBtn = document.getElementById('admin-sync-btn');
             const authLabel = document.getElementById('auth-label');
             const authIcon = document.getElementById('auth-icon');
             const authBtn = document.getElementById('auth-btn');
 
             if (isAdminLoggedIn) {
                 if (adminAddBtn) adminAddBtn.classList.remove('hidden');
-                if (adminSyncBtn) adminSyncBtn.classList.remove('hidden');
                 if (authLabel) authLabel.innerText = "تسجيل خروج كمالك";
                 if (authIcon) authIcon.className = "fa-solid fa-right-from-bracket text-red-400";
                 if (authBtn) {
@@ -551,7 +464,6 @@
                 }
             } else {
                 if (adminAddBtn) adminAddBtn.classList.add('hidden');
-                if (adminSyncBtn) adminSyncBtn.classList.add('hidden');
                 if (authLabel) authLabel.innerText = "دخول صاحب المحل";
                 if (authIcon) authIcon.className = "fa-solid fa-user-lock text-brand-accent";
                 if (authBtn) {
@@ -563,49 +475,22 @@
             renderProducts(getFilteredProducts());
         }
 
-        function openSyncModal() {
-            document.getElementById('script-url-input').value = API_URL;
-            document.getElementById('sync-modal').classList.remove('hidden');
-        }
-
-        function closeSyncModal() {
-            document.getElementById('sync-modal').classList.add('hidden');
-        }
-
-        function saveApiUrl() {
-            const val = document.getElementById('script-url-input').value.trim();
-            if (val) {
-                API_URL = val;
-                localStorage.setItem('scooter_api_url', val);
-                showToast("تم حفظ رابط السيرفر بنجاح");
-                closeSyncModal();
-            } else {
-                showToast("برجاء إدخال رابط صحيح");
-            }
-        }
-
-        // جلب المنتجات تلقائياً من السيرفر
+        // جلب المنتجات تلقائياً من السيرفر مع منع التخزين المؤقت (Cache)
         async function loadProductsFromServer() {
-            if (!API_URL || API_URL === 'ضع_رابط_الويب_اب_هنا') {
-                renderProducts(getFilteredProducts());
-                return;
-            }
             try {
-                const res = await fetch(API_URL);
+                const res = await fetch(API_URL + '?t=' + Date.now());
                 const data = await res.json();
-                if (data.ok && data.products && data.products.length) {
+                if (data.ok && data.products) {
                     PRODUCTS = data.products;
                     renderProducts(getFilteredProducts());
                 }
-            } catch (e) { console.error('Load failed', e); }
+            } catch (e) { 
+                console.error('Load failed', e); 
+            }
         }
 
         // حفظ وتحديث المنتجات على السيرفر (Google Sheets)
         async function saveProductsToServer() {
-            if (!API_URL || API_URL === 'ضع_رابط_الويب_اب_هنا') {
-                renderProducts(getFilteredProducts());
-                return;
-            }
             try {
                 const res = await fetch(API_URL, {
                     method: 'POST',
@@ -614,12 +499,14 @@
                 });
                 const data = await res.json();
                 if (data.ok) {
-                    await loadProductsFromServer(); // يجيب روابط Drive بدل base64
+                    await loadProductsFromServer(); 
                     showToast('تم الحفظ على السيرفر بنجاح');
                 } else {
-                    showToast('فشل الحفظ: ' + data.error);
+                    showToast('فشل الحفظ: ' + (data.error || 'خطأ غير معروف'));
                 }
-            } catch (e) { showToast('تعذر الاتصال بالسيرفر'); }
+            } catch (e) { 
+                showToast('تعذر الاتصال بالسيرفر'); 
+            }
         }
 
         function openAddScooterModal() {
@@ -1006,26 +893,24 @@
             const address = document.getElementById('cust-address').value;
             const totalPrice = currentCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            if (API_URL && API_URL !== 'ضع_رابط_الويب_اب_هنا') {
-                try {
-                    await fetch(API_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify({
-                            action: 'addOrder',
-                            order: {
-                                name,
-                                phone,
-                                address,
-                                items: currentCart.map(i => ({ title: i.title, type: i.category, qty: i.qty, total: i.price * i.qty })),
-                                total: totalPrice
-                            }
-                        })
-                    });
-                } catch (err) {
-                    console.error("Order sync error:", err);
-                }
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'addOrder',
+                        order: {
+                            name,
+                            phone,
+                            address,
+                            items: currentCart.map(i => ({ title: i.title, type: i.category, qty: i.qty, total: i.price * i.qty })),
+                            total: totalPrice
+                        }
+                    })
+                });
+            } catch (err) {
+                console.error("Order sync error:", err);
             }
 
             let msg = `*طلب جديد من موقع اسكوتر بنزين وكهرباء*%0A%0A`;
