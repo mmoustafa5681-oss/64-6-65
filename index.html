@@ -416,8 +416,8 @@
         let activeImageIndices = {};
         let pendingDeleteId = null;
 
-        // رابط السيرفر المباشر المحدث الخاص بك
-        let API_URL = 'https://script.google.com/macros/s/AKfycbxxOcO5S7lKdKlIEbycxg8YiRobttSZxGYgI_xmSoEROq6FqdL4XzOT0FnPpdTKvFN2dA/exec';
+        // رابط السيرفر المباشر المحدث والثابت تلقائياً
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxxOcO5S7lKdKlIEbycxg8YiRobttSZxGYgI_xmSoEROq6FqdL4XzOT0FnPpdTKvFN2dA/exec';
         let adminPass = localStorage.getItem('scooter_bg_admin_pass') || '662023';
 
         function toggleAuthModal() {
@@ -448,7 +448,6 @@
             const authLabel = document.getElementById('auth-label');
             const authIcon = document.getElementById('auth-icon');
             const authBtn = document.getElementById('auth-btn');
-            let API_URL = 'https://script.google.com/macros/s/AKfycbxxOcO5S7lKdKlIEbycxg8YiRobttSZxGYgI_xmSoEROq6FqdL4XzOT0FnPpdTKvFN2dA/exec';
 
             if (isAdminLoggedIn) {
                 if (adminAddBtn) adminAddBtn.classList.remove('hidden');
@@ -476,7 +475,7 @@
             renderProducts(getFilteredProducts());
         }
 
-        // جلب المنتجات تلقائياً من السيرفر مع منع التخزين المؤقت (Cache)
+        // جلب المنتجات تلقائياً من السيرفر مع منع التخزين المؤقت
         async function loadProductsFromServer() {
             try {
                 const res = await fetch(API_URL + '?t=' + Date.now());
